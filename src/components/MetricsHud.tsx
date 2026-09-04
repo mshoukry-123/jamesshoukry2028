@@ -1,108 +1,134 @@
 import React from 'react';
 import { playerData } from '../data/playerData';
-import { Activity, ShieldCheck, Gauge, Zap, Compass } from 'lucide-react';
+import { Zap, Compass, Gauge, Activity, ShieldCheck, AlertCircle } from 'lucide-react';
+
+const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  exitVelo: Zap,
+  infieldVelo: Compass,
+  sixty: Gauge,
+  frame: Activity,
+};
+
+const TINT: Record<string, string> = {
+  exitVelo: 'from-amber-500/25',
+  infieldVelo: 'from-sky-500/25',
+  sixty: 'from-emerald-500/25',
+  frame: 'from-violet-500/25',
+};
 
 export const MetricsHud: React.FC = () => {
+  const primary = playerData.metrics.filter((m) => m.tier === 'primary');
+  const secondary = playerData.metrics.filter((m) => m.tier === 'secondary');
+  const anyUnsourced = playerData.metrics.some(
+    (m) => m.key !== 'frame' && !m.date,
+  );
+
   return (
-    <section id="metrics" className="py-10 bg-slate-950 border-b border-slate-800/80">
+    <section id="metrics" className="scroll-mt-24 py-12 border-b border-slate-800 bg-slate-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400 mb-1">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-400">
               <ShieldCheck className="w-4 h-4" />
-              <span>Verified Measurements & Tech</span>
+              <span>Measurables</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white font-display">
-              SCOUTING METRICS & MEASURABLES
+            <h2 className="mt-1 text-2xl sm:text-3xl font-bold text-white font-display">
+              SCOUTING METRICS
             </h2>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 mt-2 md:mt-0">
-            Showcase verified via Prep Baseball / TrackMan & on-field radar
+          <p className="text-xs sm:text-sm text-slate-400 sm:text-right max-w-md">
+            Recorded at Prep Baseball showcase events. Each number carries the event
+            and date it was taken.
           </p>
         </div>
 
-        {/* 4 Main Hero Metric Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {/* Exit Velocity */}
-          <div className="relative p-5 sm:p-6 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 transition-all group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider">Exit Velo</span>
-              <Zap className="w-4 h-4 text-amber-400" />
-            </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-4xl sm:text-5xl font-black text-white font-display tracking-tight">
-                {playerData.metrics.exitVelo.value}
-              </span>
-              <span className="text-sm font-bold text-amber-400 font-display">
-                {playerData.metrics.exitVelo.unit}
-              </span>
-            </div>
-            <p className="mt-2 text-xs text-slate-400 font-medium">
-              {playerData.metrics.exitVelo.verifiedBy}
-            </p>
-          </div>
-
-          {/* Infield Arm Velocity */}
-          <div className="relative p-5 sm:p-6 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 transition-all group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider">Infield Velo</span>
-              <Compass className="w-4 h-4 text-blue-400" />
-            </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-4xl sm:text-5xl font-black text-white font-display tracking-tight">
-                {playerData.metrics.infieldVelo.value}
-              </span>
-              <span className="text-sm font-bold text-blue-400 font-display">
-                {playerData.metrics.infieldVelo.unit}
-              </span>
-            </div>
-            <p className="mt-2 text-xs text-slate-400 font-medium">
-              {playerData.metrics.infieldVelo.verifiedBy}
-            </p>
-          </div>
-
-          {/* 60-Yard Dash */}
-          <div className="relative p-5 sm:p-6 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 transition-all group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider">60-Yard Dash</span>
-              <Gauge className="w-4 h-4 text-emerald-400" />
-            </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-4xl sm:text-5xl font-black text-white font-display tracking-tight">
-                {playerData.metrics.sixtyYard.value}
-              </span>
-              <span className="text-sm font-bold text-emerald-400 font-display">
-                {playerData.metrics.sixtyYard.unit}
-              </span>
-            </div>
-            <p className="mt-2 text-xs text-slate-400 font-medium">
-              {playerData.metrics.sixtyYard.verifiedBy}
-            </p>
-          </div>
-
-          {/* Size & Frame */}
-          <div className="relative p-5 sm:p-6 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-500/40 transition-all group overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-purple-500/5 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform" />
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-bold uppercase tracking-wider">Frame / Physicals</span>
-              <Activity className="w-4 h-4 text-purple-400" />
-            </div>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-3xl sm:text-4xl font-black text-white font-display tracking-tight">
-                {playerData.height}
-              </span>
-              <span className="text-sm font-bold text-slate-400 font-display">
-                • {playerData.weight}
-              </span>
-            </div>
-            <p className="mt-2 text-xs text-slate-400 font-medium">
-              3rd | Bats Right / Throws Right
-            </p>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {primary.map((m) => {
+            const Icon = ICONS[m.key] ?? Activity;
+            const attribution = [m.event, m.date].filter(Boolean).join(' · ');
+            return (
+              <div
+                key={m.key}
+                className="relative overflow-hidden p-5 rounded-xl bg-slate-900/70 border border-slate-800"
+              >
+                <div
+                  className={`absolute -top-10 -right-10 w-32 h-32 rounded-full bg-gradient-to-br ${
+                    TINT[m.key] ?? 'from-slate-500/20'
+                  } to-transparent blur-xl pointer-events-none`}
+                />
+                <div className="relative flex items-start justify-between">
+                  <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                    {m.label}
+                  </span>
+                  <Icon className="w-4 h-4 text-slate-500" />
+                </div>
+                <div className="relative mt-3 flex items-baseline gap-1.5">
+                  <span
+                    className={`font-display font-bold tabular-nums ${
+                      m.highlight ? 'text-5xl text-white' : 'text-3xl text-white'
+                    }`}
+                  >
+                    {m.value}
+                  </span>
+                  <span className="text-sm font-semibold text-amber-400">{m.unit}</span>
+                </div>
+                <div className="relative mt-3 pt-3 border-t border-slate-800 min-h-[38px]">
+                  {attribution ? (
+                    <p className="text-[11px] leading-snug text-slate-400">
+                      {attribution}
+                      {m.method ? <span className="text-slate-500"> · {m.method}</span> : null}
+                    </p>
+                  ) : m.key === 'frame' ? (
+                    <p className="text-[11px] text-slate-400">Bats Right / Throws Right</p>
+                  ) : (
+                    <p className="text-[11px] text-slate-500 italic">Event and date pending</p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
+
+        {secondary.length ? (
+          <div className="mt-4 flex flex-wrap items-stretch gap-3">
+            {secondary.map((m) => {
+              const Icon = ICONS[m.key] ?? Activity;
+              const attribution = [m.event, m.date].filter(Boolean).join(' · ');
+              return (
+                <div
+                  key={m.key}
+                  className="flex items-center gap-4 px-4 py-3 rounded-lg bg-slate-900/50 border border-slate-800/80"
+                >
+                  <Icon className="w-4 h-4 text-slate-500 shrink-0" />
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-2xl font-display font-bold text-white tabular-nums">
+                      {m.value}
+                    </span>
+                    <span className="text-xs font-semibold text-slate-400">{m.unit}</span>
+                  </div>
+                  <div className="leading-tight">
+                    <div className="text-[11px] font-bold uppercase tracking-widest text-slate-400">
+                      {m.label}
+                    </div>
+                    <div className="text-[11px] text-slate-500">
+                      {attribution || m.method || 'Event and date pending'}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
+
+        {anyUnsourced ? (
+          <div className="mt-4 flex items-start gap-2 text-[11px] text-slate-500">
+            <AlertCircle className="w-3.5 h-3.5 mt-px shrink-0" />
+            <p>
+              Coaches: any number above without an event and date has not been
+              attributed yet. Ask and it will be sent with the source.
+            </p>
+          </div>
+        ) : null}
       </div>
     </section>
   );

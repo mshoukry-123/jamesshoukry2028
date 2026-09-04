@@ -73,8 +73,8 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="mt-8 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-600">
-          <p>© {new Date().getFullYear()} James Shoukry Baseball Recruiting Profile. All metrics and video clips verified.</p>
-          <p>Built for college baseball recruiting coordinators & scouts.</p>
+          <p>© {new Date().getFullYear()} James Shoukry. Film and measurables from Prep Baseball showcase events and live game footage.</p>
+          <p>Built for college coaches and recruiting coordinators.</p>
         </div>
       </div>
     </footer>

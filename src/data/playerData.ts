@@ -1,14 +1,53 @@
 export interface VideoClip {
   id: string;
+  slug: string;
+  n: number;
   title: string;
-  category: 'highlight' | 'game' | 'defense' | 'showcase';
+  category: 'showcase' | 'game' | 'defense' | 'cage' | 'run';
   categoryLabel: string;
   duration: string;
-  description: string;
   scoutingNote: string;
-  videoSrc: string; // local preview path
-  thumbnailSrc: string; // local thumbnail path
-  youtubeId?: string; // YouTube video ID when uploaded
+  videoSrc: string;
+  thumbnailSrc: string;
+  width: number;
+  height: number;
+  vertical: boolean;
+}
+
+export interface Metric {
+  key: string;
+  label: string;
+  value: string;
+  unit: string;
+  /** Who recorded it. Leave undefined until it can be attributed. */
+  source?: string;
+  /** Event it was recorded at. */
+  event?: string;
+  /** Date recorded, e.g. "Jul 17, 2026". Undated numbers get discounted by coaches. */
+  date?: string;
+  method?: string;
+  highlight: boolean;
+  /** 'primary' gets a headline card; 'secondary' sits in the strip below. */
+  tier: 'primary' | 'secondary';
+}
+
+export interface Accolade {
+  org: string;
+  title: string;
+  detail?: string;
+  date?: string;
+  location?: string;
+  /** 'played' = attended, 'invited' = invited but did not attend, 'selected' = named to a list */
+  status: 'played' | 'invited' | 'selected';
+  national?: boolean;
+}
+
+export interface Coach {
+  role: string;
+  name: string;
+  organization: string;
+  email?: string;
+  phone?: string;
 }
 
 export interface PlayerProfile {
@@ -16,32 +55,42 @@ export interface PlayerProfile {
   gradYear: number;
   classLabel: string;
   primaryPosition: string;
-  secondaryPosition: string;
+  secondaryPosition?: string;
   positionsDisplay: string;
+  positionShort: string;
   school: string;
   location: string;
   batsThrows: string;
   height: string;
   weight: string;
+  jerseyNumber?: string;
+  travelTeam?: string;
   ncaaId?: string;
+  ncaaRegistered: boolean;
+  gpa?: string;
+  testScore?: string;
+  anticipatedMajor?: string;
   email: string;
   phone?: string;
+  parentName?: string;
+  parentPhone?: string;
+  parentEmail?: string;
   instagram: string;
   instagramUrl: string;
   twitter: string;
   twitterUrl: string;
   ncsaUrl: string;
-  metrics: {
-    exitVelo: { value: string; unit: string; verifiedBy: string; highlight: boolean };
-    infieldVelo: { value: string; unit: string; verifiedBy: string; highlight: boolean };
-    sixtyYard: { value: string; unit: string; verifiedBy: string; highlight: boolean };
-    heightWeight: { value: string; unit: string; verifiedBy: string; highlight: false };
-  };
+  siteUrl: string;
+  bio: string;
+  metrics: Metric[];
+  accolades: Accolade[];
+  schedule: { label: string; date: string; location?: string }[];
   featuredVideo: {
     title: string;
     runtime: string;
     description: string;
     videoSrc: string;
+    videoSrcHd?: string;
     thumbnailSrc: string;
     youtubeId?: string;
   };
@@ -49,312 +98,391 @@ export interface PlayerProfile {
     school: string;
     location: string;
     program: string;
-    gpa?: string;
-    anticipatedMajor: string;
   };
-  coaches: Array<{
-    role: string;
-    name: string;
-    organization: string;
-    email?: string;
-    phone?: string;
-  }>;
+  coaches: Coach[];
   clips: VideoClip[];
 }
+
+/* ---------------------------------------------------------------------------
+   TODO(Mike) — fields left undefined on purpose. Nothing here is invented.
+   Anything still undefined simply does not render, so the page never shows a
+   placeholder or a number that can't be backed up.
+
+     gpa, testScore          academics section
+     ncaaId                  NCAA Eligibility Center number
+     phone, parent*          direct contact for coaches
+     jerseyNumber            used by the film-room marker copy
+     metrics[].event/date    each number needs an event + date to survive a
+                             coach cross-checking the public PBR listing
+     accolades[].status      'played' vs 'invited' — do not guess
+     schedule                where a coach can see him play next
+     coaches[]               real names + cells, with their permission
+--------------------------------------------------------------------------- */
 
 export const playerData: PlayerProfile = {
   name: "James Shoukry",
   gradYear: 2028,
   classLabel: "Class of 2028",
-  primaryPosition: "3rd",
-  secondaryPosition: "",
-  positionsDisplay: "3rd",
+  primaryPosition: "Third Base",
+  secondaryPosition: undefined,
+  positionsDisplay: "3B",
+  positionShort: "3B",
   school: "IMG Academy",
   location: "Bradenton, FL",
   batsThrows: "R/R",
   height: "6'1\"",
   weight: "190 lbs",
-  ncaaId: "NCAA Registered & Eligible",
+  jerseyNumber: undefined,
+  travelTeam: "Top Tier Roos American",
+  ncaaId: undefined,
+  ncaaRegistered: true,
+  gpa: undefined,
+  testScore: undefined,
+  anticipatedMajor: undefined,
   email: "james.shoukry2028@gmail.com",
+  phone: undefined,
+  parentName: undefined,
+  parentPhone: undefined,
+  parentEmail: undefined,
   instagram: "@james_shouk",
   instagramUrl: "https://instagram.com/james_shouk",
   twitter: "@james_shouk",
   twitterUrl: "https://x.com/james_shouk",
   ncsaUrl: "https://www.ncsasports.org/baseball-recruiting/florida/bradenton/img-academy-pendleton/james-shoukry",
-  metrics: {
-    exitVelo: {
-      value: "93",
-      unit: "MPH",
-      verifiedBy: "Prep Baseball / TrackMan",
-      highlight: true,
-    },
-    infieldVelo: {
-      value: "85",
-      unit: "MPH",
-      verifiedBy: "Showcase Verified",
-      highlight: true,
-    },
-    sixtyYard: {
-      value: "7.0",
-      unit: "SEC",
-      verifiedBy: "Laser Timed 60-YD",
-      highlight: true,
-    },
-    heightWeight: {
-      value: "6'1\" / 190",
-      unit: "LBS",
-      verifiedBy: "Verified Physicals",
-      highlight: false,
-    },
-  },
+  siteUrl: "https://jamesshoukry2028.vercel.app",
+  bio: "Right-handed hitting third baseman in the Class of 2028 at IMG Academy. Invite-only selections with Prep Baseball Florida, Perfect Game and ProspectWire. Film below is a July 2026 Prep Baseball showcase: batting practice, infield defense at third, and a laser-timed 60.",
+
+  metrics: [
+    { key: "exitVelo",  label: "Exit Velocity",  value: "93",  unit: "MPH",
+      source: "Prep Baseball", event: undefined, date: undefined, method: "TrackMan",
+      highlight: true, tier: "primary" },
+    { key: "infieldVelo", label: "Infield Velo", value: "85",  unit: "MPH",
+      source: undefined, event: undefined, date: undefined, method: undefined,
+      highlight: true, tier: "primary" },
+    // Right around the D1 corner-infield average. Kept on the page because an
+    // absent run time reads worse to a coach than a middling one, but it is not
+    // a headline number for a 3B, so it sits in the secondary strip.
+    { key: "sixty",     label: "60-Yard Dash",   value: "7.0", unit: "SEC",
+      source: undefined, event: undefined, date: undefined, method: "Laser timed",
+      highlight: false, tier: "secondary" },
+    { key: "frame",     label: "Height / Weight", value: "6'1\"", unit: "190 LBS",
+      source: undefined, event: undefined, date: undefined,
+      highlight: true, tier: "primary" },
+  ],
+
+  // Documented in the family's own records. status must be confirmed before publishing.
+  accolades: [
+    { org: "Prep Baseball Florida", title: "Preseason All-State",
+      detail: "Invite-only. Top high school prospects in Florida.",
+      date: "Jan 2026", location: "Florida", status: "invited" },
+    { org: "Prep Baseball Florida", title: "Top Prospect Games — West Florida",
+      detail: "Invite-only. Top 2026-2029 grads in the state.",
+      date: "Jun 23, 2026", location: "Bradenton, FL", status: "invited" },
+    { org: "Perfect Game", title: "Southeast HS All-State Games",
+      detail: "Invite-only.",
+      date: "Aug 8-9, 2026", location: "East Cobb Complex, Marietta, GA", status: "invited", national: true },
+    { org: "ProspectWire", title: "All-American Weekend",
+      detail: "Selected for the 2026 All-American Game.",
+      date: "Aug 6-9, 2026", location: "University of Tennessee", status: "invited", national: true },
+  ],
+
+  schedule: [],
+
   featuredVideo: {
-    title: "James Shoukry | 2028 3rd - Recruiting Highlight Reel",
-    runtime: "02:08",
-    description: "Unedited on-field contact audio with zero background music. Includes live game at-bats, deep warning track contact, 3B infield glove/arm work, and verified showcase reps.",
-    videoSrc: "/videos/highlight_reel_v10.mp4",
-    thumbnailSrc: "/thumbnails/hero_frame.jpg",
-    youtubeId: "", // Add YouTube ID once uploaded
+    title: "James Shoukry | 2028 3B | Recruiting Film",
+    runtime: "1:07",
+    description: "Prep Baseball showcase film from July 2026 plus live game at-bats. Batting practice from two angles, eight infield reps at third base, and a laser-timed 60. Natural field audio, no music. James is marked at the start of every showcase rep.",
+    videoSrc: "/videos/highlight_reel_v12_720.mp4",
+    videoSrcHd: "/videos/highlight_reel_v12.mp4",
+    thumbnailSrc: "/thumbnails/reel_poster.jpg",
+    youtubeId: "",
   },
+
   academics: {
     school: "IMG Academy",
     location: "Bradenton, FL",
     program: "High School Baseball Student-Athlete Program",
-    anticipatedMajor: "Business / Sports Management",
   },
+
   coaches: [
-    {
-      role: "IMG Academy Baseball Staff",
-      name: "IMG Baseball Coaching Staff",
-      organization: "IMG Academy - Bradenton, FL",
-      email: "baseball@imgacademy.com",
-    },
-    {
-      role: "Player Contact",
-      name: "James Shoukry",
-      organization: "Class of 2028 Student-Athlete",
-      email: "james.shoukry2028@gmail.com",
-    },
+    { role: "Player", name: "James Shoukry", organization: "Class of 2028 Student-Athlete",
+      email: "james.shoukry2028@gmail.com" },
   ],
+
   clips: [
-    {
-      id: "clip-01",
-      title: "Wide-Angle Game Contact & Play Continuation",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:08",
-      description: "IMG_4596.mov (00:03.8 - 00:12.1)",
-      scoutingNote: "Balanced, level swing from the right side. Drives ball with authority into the outfield with immediate hustle out of the box.",
-      videoSrc: "/videos/clip_01.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_01.jpg",
-    },
-    {
-      id: "clip-02",
-      title: "Deep Game Drive to Outfield Warning Track",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:13",
-      description: "18085540562599309.mp4 (00:00.4 - 00:13.3)",
-      scoutingNote: "Heavy barrel contact with camera follow tracking deep flight toward the outfield fence.",
-      videoSrc: "/videos/clip_02.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_02.jpg",
-    },
-    {
-      id: "clip-03",
-      title: "Overhead Press-Box Angle - Game Barrel Path",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:13",
-      description: "17906064504124687.mp4 (00:26.5 - 00:39.5)",
-      scoutingNote: "Overhead high-home angle showing swing path through the zone, staying inside the baseball, and solid launch angle.",
-      videoSrc: "/videos/clip_03.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_03.jpg",
-    },
-    {
-      id: "clip-04",
-      title: "Behind-the-Pitcher Game At-Bat",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:07",
-      description: "17906064504124687.mp4 (00:02.1 - 00:09.1)",
-      scoutingNote: "Clear behind-the-pitcher perspective. Recognizes pitch early, drives the ball back through the middle.",
-      videoSrc: "/videos/clip_04.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_04.jpg",
-    },
-    {
-      id: "clip-05",
-      title: "Compact Swing - Gap Contact",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:05",
-      description: "17880009402409506.mp4 (00:12.4 - 00:17.4)",
-      scoutingNote: "Compact, efficient hand path. Quick trigger and hard contact with ball in play.",
-      videoSrc: "/videos/clip_05.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_05.jpg",
-    },
-    {
-      id: "clip-06",
-      title: "3B Dugout Angle - Game-Speed Swing",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:06",
-      description: "18000335864949811.mp4 (00:09.2 - 00:15.4)",
-      scoutingNote: "Game-speed swing mechanics from the third-base side with strong lower-half rotation.",
-      videoSrc: "/videos/clip_06.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_06.jpg",
-    },
-    {
-      id: "clip-07",
-      title: "Close Pitcher Angle - Point of Contact",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:04",
-      description: "17873227215657938.mp4 (00:01.7 - 00:06.1)",
-      scoutingNote: "Close centerfield shot showing barrel meeting baseball cleanly out in front.",
-      videoSrc: "/videos/clip_07.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_07.jpg",
-    },
-    {
-      id: "clip-08",
-      title: "In-Game At-Bat & Hit",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:06",
-      description: "18096992801078528.mp4 (00:00.0 - 00:06.0)",
-      scoutingNote: "Game swing with ball immediately put into play with good jump off the bat.",
-      videoSrc: "/videos/clip_08.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_08.jpg",
-    },
-    {
-      id: "clip-09",
-      title: "Side Angle Game Contact",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:05",
-      description: "17943908673140282.mp4 (00:00.7 - 00:05.7)",
-      scoutingNote: "Side-view game cut showcasing rhythmic load and explosive hip drive.",
-      videoSrc: "/videos/clip_09.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_09.jpg",
-    },
-    {
-      id: "clip-10",
-      title: "Quick Hands - Inside Pitch",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:06",
-      description: "17880447273470054.mp4 (00:15.5 - 00:21.3)",
-      scoutingNote: "Turns tightly on an inner-third pitch. Pure bat speed and barrel control.",
-      videoSrc: "/videos/clip_10.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_10.jpg",
-    },
-    {
-      id: "clip-11",
-      title: "3B-Side Angle - Swing to First Base",
-      category: "game",
-      categoryLabel: "Game Contact",
-      duration: "0:07",
-      description: "17906064504124687.mp4 (00:46.0 - 00:53.0)",
-      scoutingNote: "Clean finish and immediate acceleration sprinting down the line.",
-      videoSrc: "/videos/clip_11.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_11.jpg",
-    },
-    {
-      id: "clip-12",
-      title: "Infield Defense - 3B Ground Ball & Cross-Diamond Throw",
-      category: "defense",
-      categoryLabel: "Infield Defense",
-      duration: "0:09",
-      description: "17927182782121056.mp4 (00:05.6 - 00:14.2)",
-      scoutingNote: "Glove presentation at third base, secure fielding through the ball, and strong on-target throw across the diamond.",
-      videoSrc: "/videos/clip_12.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_12.jpg",
-    },
-    {
-      id: "clip-13",
-      title: "Infield Defense - Range & Throw",
-      category: "defense",
-      categoryLabel: "Infield Defense",
-      duration: "0:05",
-      description: "17928867402210409.mp4 (00:00.0 - 00:05.1)",
-      scoutingNote: "Lateral range to the glove side, quick clean transfer, and smooth arm stroke.",
-      videoSrc: "/videos/clip_13.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_13.jpg",
-    },
-    {
-      id: "clip-14",
-      title: "Showcase BP - Side Angle Mechanics",
-      category: "showcase",
-      categoryLabel: "Showcase / BP",
-      duration: "0:03",
-      description: "James_Shoukry_-__07_17_2026_.mp4 (00:10.0 - 00:13.1)",
-      scoutingNote: "Prep Baseball showcase cut. Clean negative move/load, connected rotational sequence, high two-handed finish.",
-      videoSrc: "/videos/clip_14.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_14.jpg",
-    },
-    {
-      id: "clip-15",
-      title: "Showcase BP - Repeatable Bat Path",
-      category: "showcase",
-      categoryLabel: "Showcase / BP",
-      duration: "0:03",
-      description: "James_Shoukry_-__07_17_2026_.mp4 (00:15.7 - 00:18.7)",
-      scoutingNote: "Second showcase swing repetition. Flat bat path through hitting zone creating backspin.",
-      videoSrc: "/videos/clip_15.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_15.jpg",
-    },
-    {
-      id: "clip-16",
-      title: "Showcase Infield Rep - 85 MPH Arm Velo",
-      category: "defense",
-      categoryLabel: "Infield Defense",
-      duration: "0:04",
-      description: "James_Shoukry_-__07_17_2026_.mp4 (00:34.3 - 00:38.3)",
-      scoutingNote: "Showcase defensive repetition. Soft hands, quick exchange, effortless 85 MPH throw across the infield.",
-      videoSrc: "/videos/clip_16.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_16.jpg",
-    },
-    {
-      id: "clip-17",
-      title: "Cage Work - Extension & Separation",
-      category: "showcase",
-      categoryLabel: "Showcase / BP",
-      duration: "0:03",
-      description: "18332773384229592.mp4 (00:00.0 - 00:02.6)",
-      scoutingNote: "Close-up cage swing highlighting hip-shoulder separation and full extension through contact.",
-      videoSrc: "/videos/clip_17.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_17.jpg",
-    },
-    {
-      id: "clip-18",
-      title: "Cage Work - Hand Speed & Barrel Action",
-      category: "showcase",
-      categoryLabel: "Showcase / BP",
-      duration: "0:03",
-      description: "18332773384229592.mp4 (00:05.4 - 00:07.9)",
-      scoutingNote: "Fast hands through the zone generating verified 93 MPH exit velocity.",
-      videoSrc: "/videos/clip_18.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_18.jpg",
-    },
-    {
-      id: "clip-19",
-      title: "Cage Work - Lower Half Anchor",
-      category: "showcase",
-      categoryLabel: "Showcase / BP",
-      duration: "0:03",
-      description: "18332773384229592.mp4 (00:10.6 - 00:13.3)",
-      scoutingNote: "Strong base, firm front leg block, head remains still behind the barrel.",
-      videoSrc: "/videos/clip_19.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_19.jpg",
-    },
-    {
-      id: "clip-20",
-      title: "Cage Work - High Finish Mechanics",
-      category: "showcase",
-      categoryLabel: "Showcase / BP",
-      duration: "0:04",
-      description: "18332773384229592.mp4 (00:15.0 - 00:18.7)",
-      scoutingNote: "Consistent barrel delivery and balanced posture throughout swing completion.",
-      videoSrc: "/videos/clip_20.mp4",
-      thumbnailSrc: "/thumbnails/selected_v10_20.jpg",
-    },
+  {
+    id: "hit_show_1",
+    slug: "hit-show-1",
+    n: 1,
+    title: "Showcase BP - Side Angle Load & Launch",
+    category: "showcase",
+    categoryLabel: "SHOWCASE BP",
+    duration: "0:03",
+    scoutingNote: "Third-base-side angle. Balanced negative move, connected rotation, high two-handed finish.",
+    videoSrc: "/videos/hit_show_1.mp4",
+    thumbnailSrc: "/thumbnails/hit_show_1.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "hit_show_2",
+    slug: "hit-show-2",
+    n: 2,
+    title: "Showcase BP - Repeatable Bat Path",
+    category: "showcase",
+    categoryLabel: "SHOWCASE BP",
+    duration: "0:03",
+    scoutingNote: "Same setup, same finish. Repeatability is the point: the swing does not change shape pitch to pitch.",
+    videoSrc: "/videos/hit_show_2.mp4",
+    thumbnailSrc: "/thumbnails/hit_show_2.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "hit_show_3",
+    slug: "hit-show-3",
+    n: 3,
+    title: "Showcase BP - Hip-Shoulder Separation",
+    category: "showcase",
+    categoryLabel: "SHOWCASE BP",
+    duration: "0:03",
+    scoutingNote: "Lower half opens ahead of the barrel. Firm front side at contact.",
+    videoSrc: "/videos/hit_show_3.mp4",
+    thumbnailSrc: "/thumbnails/hit_show_3.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "hit_show_4",
+    slug: "hit-show-4",
+    n: 4,
+    title: "Showcase BP - Extension Through Contact",
+    category: "showcase",
+    categoryLabel: "SHOWCASE BP",
+    duration: "0:03",
+    scoutingNote: "Full extension out front, head still behind the barrel, balanced finish.",
+    videoSrc: "/videos/hit_show_4.mp4",
+    thumbnailSrc: "/thumbnails/hit_show_4.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "hit_show_5",
+    slug: "hit-show-5",
+    n: 5,
+    title: "Showcase BP - Front Angle Bat Path",
+    category: "showcase",
+    categoryLabel: "SHOWCASE BP",
+    duration: "0:02",
+    scoutingNote: "Straight-on look at hand path and barrel entry into the zone.",
+    videoSrc: "/videos/hit_show_5.mp4",
+    thumbnailSrc: "/thumbnails/hit_show_5.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "hit_show_6",
+    slug: "hit-show-6",
+    n: 6,
+    title: "Showcase BP - Direction & Finish",
+    category: "showcase",
+    categoryLabel: "SHOWCASE BP",
+    duration: "0:02",
+    scoutingNote: "Stays through the middle of the field. No drift, no bail on the front side.",
+    videoSrc: "/videos/hit_show_6.mp4",
+    thumbnailSrc: "/thumbnails/hit_show_6.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "hit_show_7",
+    slug: "hit-show-7",
+    n: 7,
+    title: "Showcase BP - Lower Half Sequence",
+    category: "showcase",
+    categoryLabel: "SHOWCASE BP",
+    duration: "0:02",
+    scoutingNote: "Back hip fires first, front leg blocks, barrel accelerates late.",
+    videoSrc: "/videos/hit_show_7.mp4",
+    thumbnailSrc: "/thumbnails/hit_show_7.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "hit_game_1",
+    slug: "hit-game-1",
+    n: 8,
+    title: "In-Game At-Bat - Behind the Pitcher",
+    category: "game",
+    categoryLabel: "IN GAME",
+    duration: "0:07",
+    scoutingNote: "Live at-bat from the pitcher's perspective. Recognizes the pitch early and drives it back through the middle.",
+    videoSrc: "/videos/hit_game_1.mp4",
+    thumbnailSrc: "/thumbnails/hit_game_1.jpg",
+    width: 1280, height: 720, vertical: false,
+  },
+  {
+    id: "hit_game_2",
+    slug: "hit-game-2",
+    n: 9,
+    title: "In-Game At-Bat - Contact & Out of the Box",
+    category: "game",
+    categoryLabel: "IN GAME",
+    duration: "0:07",
+    scoutingNote: "Game swing with immediate acceleration down the line. Runs out of the box every time.",
+    videoSrc: "/videos/hit_game_2.mp4",
+    thumbnailSrc: "/thumbnails/hit_game_2.jpg",
+    width: 1280, height: 720, vertical: false,
+  },
+  {
+    id: "hit_game_3",
+    slug: "hit-game-3",
+    n: 10,
+    title: "In-Game At-Bat - Hard Contact",
+    category: "game",
+    categoryLabel: "IN GAME",
+    duration: "0:08",
+    scoutingNote: "Live game at-bat against a travel-circuit arm. Barrel gets to the ball and stays through it.",
+    videoSrc: "/videos/hit_game_3.mp4",
+    thumbnailSrc: "/thumbnails/hit_game_3.jpg",
+    width: 1280, height: 720, vertical: false,
+  },
+  {
+    id: "hit_cage_1",
+    slug: "hit-cage-1",
+    n: 11,
+    title: "Cage Work - Hand Speed & Barrel Action",
+    category: "cage",
+    categoryLabel: "CAGE WORK",
+    duration: "0:03",
+    scoutingNote: "Close-range look at hand speed and barrel control with the swing under load.",
+    videoSrc: "/videos/hit_cage_1.mp4",
+    thumbnailSrc: "/thumbnails/hit_cage_1.jpg",
+    width: 678, height: 720, vertical: true,
+  },
+  {
+    id: "def_show_1",
+    slug: "def-show-1",
+    n: 12,
+    title: "3B Defense - Set, Field, Throw",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:04",
+    scoutingNote: "Pre-pitch move into a fielding position, works through the baseball, on-line throw across the diamond.",
+    videoSrc: "/videos/def_show_1.mp4",
+    thumbnailSrc: "/thumbnails/def_show_1.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "def_show_2",
+    slug: "def-show-2",
+    n: 13,
+    title: "3B Defense - Footwork Into the Throw",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:04",
+    scoutingNote: "Clean funnel to the middle, feet get around the ball, transfer is quick and repeatable.",
+    videoSrc: "/videos/def_show_2.mp4",
+    thumbnailSrc: "/thumbnails/def_show_2.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "def_show_3",
+    slug: "def-show-3",
+    n: 14,
+    title: "3B Defense - Range to the Glove Side",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:03",
+    scoutingNote: "Lateral move to his left, keeps the glove out front, gets enough of his body behind the throw.",
+    videoSrc: "/videos/def_show_3.mp4",
+    thumbnailSrc: "/thumbnails/def_show_3.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "def_show_4",
+    slug: "def-show-4",
+    n: 15,
+    title: "3B Defense - Short Hop & Quick Release",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:03",
+    scoutingNote: "Handles the in-between hop and gets rid of it without resetting.",
+    videoSrc: "/videos/def_show_4.mp4",
+    thumbnailSrc: "/thumbnails/def_show_4.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "def_show_5",
+    slug: "def-show-5",
+    n: 16,
+    title: "3B Defense - Charge & Throw on the Move",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:03",
+    scoutingNote: "Comes in on the baseball and throws through the play rather than gathering.",
+    videoSrc: "/videos/def_show_5.mp4",
+    thumbnailSrc: "/thumbnails/def_show_5.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "def_show_6",
+    slug: "def-show-6",
+    n: 17,
+    title: "3B Defense - Backhand Side",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:03",
+    scoutingNote: "Works to the backhand, stays low, keeps the throwing lane open.",
+    videoSrc: "/videos/def_show_6.mp4",
+    thumbnailSrc: "/thumbnails/def_show_6.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "def_wide_1",
+    slug: "def-wide-1",
+    n: 18,
+    title: "3B Defense - Full-Field Angle",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:03",
+    scoutingNote: "Wider angle showing the actual distance on the throw and the arm playing at 3B depth.",
+    videoSrc: "/videos/def_wide_1.mp4",
+    thumbnailSrc: "/thumbnails/def_wide_1.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "def_wide_2",
+    slug: "def-wide-2",
+    n: 19,
+    title: "3B Defense - Slow Roller, Bare Hand Ready",
+    category: "defense",
+    categoryLabel: "3B DEFENSE",
+    duration: "0:03",
+    scoutingNote: "Charges the slow roller under control and finishes the play moving forward.",
+    videoSrc: "/videos/def_wide_2.mp4",
+    thumbnailSrc: "/thumbnails/def_wide_2.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
+  {
+    id: "run_60_1",
+    slug: "run-60-1",
+    n: 20,
+    title: "60-Yard Dash - Laser Timed",
+    category: "run",
+    categoryLabel: "RUN",
+    duration: "0:03",
+    scoutingNote: "Laser-timed 60 at the Prep Baseball showcase. Clean acceleration through the gate.",
+    videoSrc: "/videos/run_60_1.mp4",
+    thumbnailSrc: "/thumbnails/run_60_1.jpg",
+    width: 1920, height: 1080, vertical: false,
+  },
   ],
+};
+
+export const clipBySlug = (slug: string) =>
+  playerData.clips.find((c) => c.slug === slug);
+
+export const clipCounts = () => {
+  const c = playerData.clips;
+  return {
+    all: c.length,
+    showcase: c.filter((x) => x.category === 'showcase').length,
+    game: c.filter((x) => x.category === 'game' || x.category === 'cage').length,
+    defense: c.filter((x) => x.category === 'defense').length,
+    run: c.filter((x) => x.category === 'run').length,
+  };
 };
