@@ -4,10 +4,10 @@ import { Play, Pause, Volume2, VolumeX, Maximize, Film, CheckCircle2, Download }
 
 const CHAPTERS = [
   { t: 0,    label: 'Title' },
-  { t: 3.6,  label: 'In game' },
-  { t: 27.5, label: 'Hitting — showcase BP' },
-  { t: 40.5, label: '3B defense' },
-  { t: 67.0, label: '60-yard dash' },
+  { t: 3.45, label: 'In game' },
+  { t: 27.1, label: 'Hitting — showcase BP' },
+  { t: 37.5, label: '3B defense' },
+  { t: 63.6, label: '60-yard dash' },
 ];
 
 const fmt = (s: number) => {
@@ -113,7 +113,7 @@ export const FeaturedVideo: React.FC = () => {
             <button
               onClick={togglePlay}
               aria-label="Play recruiting film"
-              className="absolute inset-0 flex items-center justify-center bg-slate-950/30 hover:bg-slate-950/20 transition-colors group"
+              className="absolute inset-0 flex items-center justify-center bg-slate-950/5 hover:bg-slate-950/0 transition-colors group"
             >
               <span className="w-20 h-20 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center shadow-2xl shadow-amber-500/30 group-hover:scale-105 transition-transform">
                 <Play className="w-9 h-9 fill-current ml-1" />
