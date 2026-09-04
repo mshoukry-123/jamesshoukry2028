@@ -99,7 +99,7 @@ export const MetricsHud: React.FC = () => {
               </span>
             </div>
             <p className="mt-2 text-xs text-slate-400 font-medium">
-              3rd/SS | Bats Right / Throws Right
+              3rd | Bats Right / Throws Right
             </p>
           </div>
         </div>

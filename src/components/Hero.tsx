@@ -148,7 +148,7 @@ export const Hero: React.FC = () => {
                       James Shoukry
                     </h3>
                     <p className="text-xs text-slate-300 font-medium">
-                      3rd/SS • Bradenton, FL
+                      3rd • Bradenton, FL
                     </p>
                   </div>
 

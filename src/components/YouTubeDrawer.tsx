@@ -19,9 +19,9 @@ export const YouTubeDrawer: React.FC<YouTubeDrawerProps> = ({ isOpen, onClose })
     setTimeout(() => setCopiedSection(null), 2000);
   };
 
-  const reelTitle = "James Shoukry | 2028 3rd/SS | Recruiting Highlight Reel | IMG Academy";
+  const reelTitle = "James Shoukry | 2028 3rd | Recruiting Highlight Reel | IMG Academy";
 
-  const reelDescription = `James Shoukry | 3rd/SS | Class of 2028 | IMG Academy
+  const reelDescription = `James Shoukry | 3rd | Class of 2028 | IMG Academy
 
 6'1 | 190 lbs | R/R
 93 MPH Exit Velo | 85 MPH Infield Velo | 7.0 60-Yard Dash
@@ -134,7 +134,7 @@ Video breakdown:
                 <div className="text-[11px] text-slate-400 mt-0.5">Pin as channel trailer (Featured Highlight)</div>
               </div>
               <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
-                <div className="text-xs font-bold text-white">2. Infield Defense & Arm (3rd/SS)</div>
+                <div className="text-xs font-bold text-white">2. Infield Defense & Arm (3rd)</div>
                 <div className="text-[11px] text-slate-400 mt-0.5">Ground balls, range, slow rollers, 85 MPH throws</div>
               </div>
               <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
