@@ -15,3 +15,6 @@ dist-ssr/
 *.local
 .vscode/
 .idea/
+
+# Local working notes (not for the public repo)
+RECRUITING-SITE-STATUS.md

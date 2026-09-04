@@ -100,9 +100,8 @@ export const FilmRoom: React.FC = () => {
               FILM ROOM
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-1 max-w-xl leading-relaxed">
-              {playerData.clips.length} isolated reps. James is marked at the start of
-              every one. Any rep can be linked directly, so you can send a single clip
-              to your staff.
+              {playerData.clips.length} isolated reps, game and showcase. Any rep can be
+              linked directly, so you can send a single clip to your staff.
             </p>
           </div>
 

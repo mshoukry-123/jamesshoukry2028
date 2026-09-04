@@ -4,10 +4,10 @@ import { Play, Pause, Volume2, VolumeX, Maximize, Film, CheckCircle2, Download }
 
 const CHAPTERS = [
   { t: 0,    label: 'Title' },
-  { t: 4.6,  label: 'Hitting — showcase BP' },
-  { t: 21.5, label: 'In game' },
-  { t: 32.9, label: '3B defense' },
-  { t: 59.5, label: '60-yard dash' },
+  { t: 3.6,  label: 'In game' },
+  { t: 27.5, label: 'Hitting — showcase BP' },
+  { t: 40.5, label: '3B defense' },
+  { t: 67.0, label: '60-yard dash' },
 ];
 
 const fmt = (s: number) => {
@@ -177,7 +177,7 @@ export const FeaturedVideo: React.FC = () => {
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-slate-500">
-          <span>James is marked at the start of every showcase rep.</span>
+          <span>Natural field audio. No music, no overlays.</span>
           {playerData.featuredVideo.videoSrcHd ? (
             <a
               href={playerData.featuredVideo.videoSrcHd}
