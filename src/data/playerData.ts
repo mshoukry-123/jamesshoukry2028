@@ -136,6 +136,10 @@ export const playerData: PlayerProfile = {
   travelTeam: "Top Tier Roos American",
   ncaaId: undefined,
   ncaaRegistered: true,
+  // 2.8 as of junior year. Deliberately not published: it clears the NCAA core-GPA
+  // floor but is not a selling point, and leading with it can screen him out at
+  // academically selective programs before a coach watches the film. The page shows
+  // NCAA registration and offers the transcript instead. Revisit if it goes above 3.0.
   gpa: undefined,
   testScore: undefined,
   anticipatedMajor: undefined,
@@ -154,16 +158,16 @@ export const playerData: PlayerProfile = {
 
   metrics: [
     { key: "exitVelo",  label: "Exit Velocity",  value: "93",  unit: "MPH",
-      source: "Prep Baseball", event: undefined, date: undefined, method: "TrackMan",
+      source: "Prep Baseball", event: "Prep Baseball", date: "Jun 4, 2026", method: "TrackMan",
       highlight: true, tier: "primary" },
     { key: "infieldVelo", label: "Infield Velo", value: "85",  unit: "MPH",
-      source: undefined, event: undefined, date: undefined, method: undefined,
+      source: "Prep Baseball", event: "Prep Baseball", date: "Jun 4, 2026", method: undefined,
       highlight: true, tier: "primary" },
     // Right around the D1 corner-infield average. Kept on the page because an
     // absent run time reads worse to a coach than a middling one, but it is not
     // a headline number for a 3B, so it sits in the secondary strip.
     { key: "sixty",     label: "60-Yard Dash",   value: "7.0", unit: "SEC",
-      source: undefined, event: undefined, date: undefined, method: "Laser timed",
+      source: "Perfect Game", event: "Perfect Game", date: "Aug 12, 2025", method: "Laser timed",
       highlight: false, tier: "secondary" },
     { key: "frame",     label: "Height / Weight", value: "6'1\"", unit: "190 LBS",
       source: undefined, event: undefined, date: undefined,

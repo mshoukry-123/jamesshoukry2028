@@ -37,8 +37,8 @@ export const MetricsHud: React.FC = () => {
             </h2>
           </div>
           <p className="text-xs sm:text-sm text-slate-400 sm:text-right max-w-md">
-            Recorded at Prep Baseball showcase events. Each number carries the event
-            and date it was taken.
+            Recorded at Prep Baseball and Perfect Game showcase events. Each number
+            carries the event and date it was taken.
           </p>
         </div>
 
