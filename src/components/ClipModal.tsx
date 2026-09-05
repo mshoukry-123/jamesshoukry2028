@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { VideoClip } from '../data/playerData';
-import { X, ChevronLeft, ChevronRight, Award, Link2, Check, RotateCcw } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Award, Link2, Check, RotateCcw, VolumeX } from 'lucide-react';
 import { clipUrl, copyText } from '../lib/profile';
 
 interface ClipModalProps {
@@ -37,6 +37,18 @@ export const ClipModal: React.FC<ClipModalProps> = ({
     const v = videoRef.current;
     if (v) v.playbackRate = rate;
   }, [rate, clip?.id]);
+
+  /* Play with sound. The modal only opens from a click, so browsers normally allow
+     it; if a policy still blocks it we fall back to muted rather than not playing. */
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v || !clip) return;
+    v.muted = false;
+    v.play().catch(() => {
+      v.muted = true;
+      void v.play();
+    });
+  }, [clip?.id]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -155,9 +167,7 @@ export const ClipModal: React.FC<ClipModalProps> = ({
             src={clip.videoSrc}
             poster={clip.thumbnailSrc}
             controls
-            autoPlay
             loop
-            muted
             playsInline
             preload="auto"
             className={clip.vertical ? 'max-h-[62vh] w-auto' : 'w-full h-full object-contain'}
@@ -209,8 +219,24 @@ export const ClipModal: React.FC<ClipModalProps> = ({
             <h3 className="text-lg font-bold text-white font-display leading-snug">
               {clip.title}
             </h3>
-            <span className="shrink-0 text-xs text-slate-400 font-mono">{clip.duration}</span>
+            <span className="shrink-0 flex items-center gap-2 text-xs text-slate-400 font-mono">
+              {clip.silent ? (
+                <span className="inline-flex items-center gap-1 font-sans text-[11px] text-slate-500">
+                  <VolumeX className="w-3.5 h-3.5" />
+                  No audio
+                </span>
+              ) : null}
+              {clip.duration}
+            </span>
           </div>
+
+          {clip.silent ? (
+            <p className="text-[11px] text-slate-500 leading-relaxed">
+              This rep comes from a showcase video whose only audio was a music bed, so it ships
+              silent rather than with a soundtrack over it. Every clip cut from original field
+              footage keeps its natural audio.
+            </p>
+          ) : null}
 
           <div className="p-3 rounded-lg bg-slate-950/60 border border-slate-800">
             <div className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">

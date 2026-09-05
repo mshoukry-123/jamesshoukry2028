@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { playerData, VideoClip, clipBySlug } from '../data/playerData';
-import { Play, Search, Filter, Shield, Target, Flame, Sparkles, Gauge, Keyboard } from 'lucide-react';
+import { Play, Search, Filter, Shield, Target, Flame, Sparkles, Gauge, Keyboard, VolumeX } from 'lucide-react';
 import { ClipModal } from './ClipModal';
 import { readClipHash } from '../lib/profile';
 
@@ -191,8 +191,18 @@ export const FilmRoom: React.FC = () => {
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-slate-950/90 text-amber-400 px-2 py-0.5 rounded border border-slate-800">
                       {clip.categoryLabel}
                     </span>
-                    <span className="text-[11px] font-mono font-medium bg-slate-950/90 text-slate-300 px-2 py-0.5 rounded border border-slate-800">
-                      {clip.duration}
+                    <span className="flex items-center gap-1.5">
+                      {clip.silent ? (
+                        <span
+                          className="inline-flex items-center bg-slate-950/90 text-slate-400 px-1.5 py-1 rounded border border-slate-800"
+                          title="Source carried a music bed, so this clip ships without audio"
+                        >
+                          <VolumeX className="w-3 h-3" />
+                        </span>
+                      ) : null}
+                      <span className="text-[11px] font-mono font-medium bg-slate-950/90 text-slate-300 px-2 py-0.5 rounded border border-slate-800">
+                        {clip.duration}
+                      </span>
                     </span>
                   </div>
                 </div>
