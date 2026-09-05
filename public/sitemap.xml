@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Single-page site. The Film Room deep links are hash fragments (#clip=...), which
+  Google collapses into the root URL, so listing them here would add nothing. The
+  video extension is the part that earns its keep: it gives the reel its own shot
+  at a video result for a name search.
+-->
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://www.jamesshoukry2028.com/</loc>
+    <lastmod>2026-09-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <video:video>
+      <video:thumbnail_loc>https://www.jamesshoukry2028.com/thumbnails/reel_v16_poster.jpg</video:thumbnail_loc>
+      <video:title>James Shoukry | 2028 3B | Recruiting Film</video:title>
+      <video:description>Live game at-bats, showcase hitting from the Perfect Game WWBA workout at East Cobb and a night BP round, eight infield reps at third, and a laser-timed 60. Natural field audio, no music, no overlays.</video:description>
+      <video:content_loc>https://www.jamesshoukry2028.com/videos/highlight_reel_v16.mp4</video:content_loc>
+      <video:player_loc>https://www.youtube.com/embed/gRIS0rBUZkU</video:player_loc>
+      <video:duration>75</video:duration>
+      <video:publication_date>2026-09-05</video:publication_date>
+      <video:family_friendly>yes</video:family_friendly>
+      <video:live>no</video:live>
+    </video:video>
+  </url>
+</urlset>

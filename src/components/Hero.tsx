@@ -109,6 +109,15 @@ export const Hero: React.FC = () => {
                 <ExternalLink className="w-3 h-3" />
               </a>
               <a
+                href={p.youtubeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white inline-flex items-center gap-1 py-1"
+              >
+                YouTube: <span className="text-slate-200 font-medium">{p.youtube}</span>
+                <ExternalLink className="w-3 h-3 text-slate-500" />
+              </a>
+              <a
                 href={p.twitterUrl}
                 target="_blank"
                 rel="noopener noreferrer"

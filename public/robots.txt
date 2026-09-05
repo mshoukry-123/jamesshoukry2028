@@ -1,0 +1,8 @@
+# James Shoukry | Class of 2028 | recruiting profile
+# Open to every crawler. Nothing here is private; the whole point is that a
+# coach who searches the name lands on this page and not a stale third-party one.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://www.jamesshoukry2028.com/sitemap.xml

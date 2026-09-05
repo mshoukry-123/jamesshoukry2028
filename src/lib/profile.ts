@@ -44,8 +44,12 @@ export function profileBlock(): string {
   if (p.phone) L.push(`Phone: ${p.phone}`);
   if (p.parentName) L.push(`Parent: ${p.parentName}${p.parentPhone ? ` — ${p.parentPhone}` : ''}${p.parentEmail ? ` — ${p.parentEmail}` : ''}`);
   L.push(`Film: ${p.siteUrl}`);
+  L.push(`YouTube: ${p.youtubeUrl}`);
   L.push(`NCSA: ${p.ncsaUrl}`);
-  L.push(`X/IG: ${p.twitter}`);
+  // X and IG are different handles. They used to share one line, which handed
+  // a coach the wrong Instagram.
+  L.push(`X: ${p.twitter}`);
+  L.push(`Instagram: ${p.instagram}`);
   return L.join('\n');
 }
 

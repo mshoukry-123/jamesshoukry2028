@@ -1,6 +1,6 @@
 import React from 'react';
 import { playerData } from '../data/playerData';
-import { GraduationCap, Users, Mail, Award, CheckCircle, ExternalLink, Phone, CalendarDays } from 'lucide-react';
+import { GraduationCap, Users, Mail, Award, CheckCircle, ExternalLink, Phone, CalendarDays, PlayCircle } from 'lucide-react';
 
 const Row: React.FC<{ label: string; children: React.ReactNode }> = ({ label, children }) => (
   <div className="flex items-center justify-between gap-3 p-3 rounded-lg bg-slate-950/60 border border-slate-800">
@@ -132,6 +132,28 @@ export const AcademicsAndCoaches: React.FC = () => {
                 >
                   <Award className="w-3.5 h-3.5" />
                   <span>View</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+
+              {/* Mirror of the film on YouTube. Some staffs forward a YouTube link
+                  internally more readily than a personal site, and several
+                  questionnaires have a YouTube-only video field. */}
+              <div className="p-3.5 rounded-lg bg-slate-950/60 border border-slate-800 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-xs font-bold text-white">Film on YouTube</div>
+                  <div className="text-[11px] text-slate-400 truncate">
+                    Same reel, chaptered, for questionnaires and forwarding
+                  </div>
+                </div>
+                <a
+                  href={p.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all inline-flex items-center gap-1"
+                >
+                  <PlayCircle className="w-3.5 h-3.5" />
+                  <span>Watch</span>
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </div>

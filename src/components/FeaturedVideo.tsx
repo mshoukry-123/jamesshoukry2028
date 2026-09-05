@@ -194,8 +194,8 @@ export const FeaturedVideo: React.FC = () => {
           <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800/80">
             <div className="text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">Showcase BP</div>
             <p className="text-xs text-slate-300 leading-relaxed">
-              Two angles from the July 2026 Prep Baseball showcase. Load, sequence and
-              finish, with the same swing shape rep to rep.
+              Perfect Game WWBA workout at East Cobb plus a night round under lights.
+              Load, sequence and finish, with the same swing shape rep to rep.
             </p>
           </div>
 

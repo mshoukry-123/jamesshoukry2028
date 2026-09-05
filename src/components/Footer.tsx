@@ -43,6 +43,15 @@ export const Footer: React.FC = () => {
               <ExternalLink className="w-3 h-3" />
             </a>
             <a
+              href={playerData.youtubeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-amber-400 inline-flex items-center gap-1 transition-colors"
+            >
+              <span>YouTube</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
               href={playerData.twitterUrl}
               target="_blank"
               rel="noopener noreferrer"

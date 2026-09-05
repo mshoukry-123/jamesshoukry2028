@@ -82,6 +82,8 @@ export interface PlayerProfile {
   twitter: string;
   twitterUrl: string;
   ncsaUrl: string;
+  youtube: string;
+  youtubeUrl: string;
   siteUrl: string;
   bio: string;
   metrics: Metric[];
@@ -155,8 +157,12 @@ export const playerData: PlayerProfile = {
   twitter: "@jamesShouk2028",
   twitterUrl: "https://x.com/jamesShouk2028",
   ncsaUrl: "https://www.ncsasports.org/baseball-recruiting/florida/bradenton/img-academy-pendleton/james-shoukry",
-  siteUrl: "https://jamesshoukry2028.vercel.app",
-  bio: "Right-handed hitting third baseman in the Class of 2028 at IMG Academy. Invite-only selections with Prep Baseball Florida, Perfect Game and ProspectWire. Film below is a July 2026 Prep Baseball showcase: batting practice, infield defense at third, and a laser-timed 60.",
+  youtube: "@jamesshoukry2028",
+  youtubeUrl: "https://www.youtube.com/@jamesshoukry2028",
+  // Canonical host. Everything that emits an absolute URL reads this, so the
+  // vercel.app preview domain never leaks into a share card or a schema block.
+  siteUrl: "https://www.jamesshoukry2028.com",
+  bio: "Right-handed hitting third baseman in the Class of 2028 at IMG Academy. Invite-only selections with Prep Baseball Florida, Perfect Game and ProspectWire. Film below runs live game at-bats, showcase batting practice, infield defense at third, and a laser-timed 60.",
 
   metrics: [
     { key: "exitVelo",  label: "Exit Velocity",  value: "93",  unit: "MPH",
@@ -201,7 +207,7 @@ export const playerData: PlayerProfile = {
     videoSrc: "/videos/highlight_reel_v16_720.mp4",
     videoSrcHd: "/videos/highlight_reel_v16.mp4",
     thumbnailSrc: "/thumbnails/reel_v16_poster.jpg",
-    youtubeId: "",
+    youtubeId: "gRIS0rBUZkU",
   },
 
   academics: {
