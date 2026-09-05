@@ -3,11 +3,11 @@ import { playerData } from '../data/playerData';
 import { Play, Pause, Volume2, VolumeX, Maximize, Film, CheckCircle2, Download } from 'lucide-react';
 
 const CHAPTERS = [
-  { t: 0,    label: 'Title' },
-  { t: 3.45, label: 'In game' },
-  { t: 27.1, label: 'Hitting — showcase BP' },
-  { t: 37.5, label: '3B defense' },
-  { t: 63.6, label: '60-yard dash' },
+  { t: 0,     label: 'Title' },
+  { t: 4.3,   label: 'In game' },
+  { t: 20.5,  label: 'Hitting — showcase BP' },
+  { t: 36.22, label: '3B defense' },
+  { t: 67.88, label: '60-yard dash' },
 ];
 
 const fmt = (s: number) => {

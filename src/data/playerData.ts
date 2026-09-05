@@ -196,11 +196,11 @@ export const playerData: PlayerProfile = {
 
   featuredVideo: {
     title: "James Shoukry | 2028 3B | Recruiting Film",
-    runtime: "1:11",
-    description: "Opens with live game at-bats, including a double and the slide into second. Then July 2026 Prep Baseball showcase film: batting practice, eight infield reps at third, and a laser-timed 60. Natural field audio, no music, no overlays.",
-    videoSrc: "/videos/highlight_reel_v15_720.mp4",
-    videoSrcHd: "/videos/highlight_reel_v15.mp4",
-    thumbnailSrc: "/thumbnails/reel_poster.jpg",
+    runtime: "1:15",
+    description: "Opens with live game at-bats, then showcase hitting from the Perfect Game WWBA workout at East Cobb and a night BP round. Eight infield reps at third, including one full field-and-throw start to finish, and a laser-timed 60. Natural field audio, no music, no overlays.",
+    videoSrc: "/videos/highlight_reel_v16_720.mp4",
+    videoSrcHd: "/videos/highlight_reel_v16.mp4",
+    thumbnailSrc: "/thumbnails/reel_v16_poster.jpg",
     youtubeId: "",
   },
 
