@@ -83,7 +83,7 @@ export const Footer: React.FC = () => {
 
         <div className="mt-8 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-600">
           <p>© {new Date().getFullYear()} James Shoukry. Film and measurables from Prep Baseball showcase events and live game footage.</p>
-          <p>Built for college coaches and recruiting coordinators.</p>
+          <div className="flex gap-4 text-sm text-slate-400"><a href="/privacy" className="hover:text-amber-400">Privacy</a><button className="hover:text-amber-400" onClick={() => window.dispatchEvent(new Event('analytics-preferences'))}>Analytics preferences</button></div>
         </div>
       </div>
     </footer>

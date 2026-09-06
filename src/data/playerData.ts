@@ -97,6 +97,10 @@ export interface PlayerProfile {
     videoSrcHd?: string;
     thumbnailSrc: string;
     youtubeId?: string;
+    publishedDate: string;
+    durationSeconds: number;
+    context: string;
+    chapters: { time: number; label: string }[];
   };
   academics: {
     school: string;
@@ -203,11 +207,20 @@ export const playerData: PlayerProfile = {
   featuredVideo: {
     title: "James Shoukry | 2028 3B | Recruiting Film",
     runtime: "1:15",
-    description: "Opens with live game at-bats, then showcase hitting from the Perfect Game WWBA workout at East Cobb and a night BP round. Eight infield reps at third, including one full field-and-throw start to finish, and a laser-timed 60. Natural field audio, no music, no overlays.",
+    description: "Opens with live game at-bats, then showcase hitting from the Perfect Game WWBA workout at East Cobb and a night BP round. Eight infield reps at third, including one full field-and-throw start to finish, and a laser-timed 60. Natural field audio, no added music.",
     videoSrc: "/videos/highlight_reel_v16_720.mp4",
     videoSrcHd: "/videos/highlight_reel_v16.mp4",
     thumbnailSrc: "/thumbnails/reel_v16_poster.jpg",
     youtubeId: "gRIS0rBUZkU",
+    publishedDate: "2026-09-05",
+    durationSeconds: 74.8,
+    context: "The reel combines footage from different events, including the June 2025 Perfect Game workout at East Cobb.",
+    chapters: [
+      { time: 4.3, label: "Game at-bats" },
+      { time: 20.5, label: "Showcase hitting" },
+      { time: 36.22, label: "Third-base defense" },
+      { time: 67.88, label: "Running" },
+    ],
   },
 
   academics: {

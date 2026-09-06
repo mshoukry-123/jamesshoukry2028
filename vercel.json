@@ -2,6 +2,11 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "trailingSlash": false,
+  "rewrites": [
+    { "source": "/recruiting-film", "destination": "/recruiting-film/index.html" },
+    { "source": "/privacy", "destination": "/privacy/index.html" }
+  ],
   "redirects": [
     {
       "source": "/",

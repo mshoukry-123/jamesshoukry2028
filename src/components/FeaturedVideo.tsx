@@ -99,6 +99,7 @@ export const FeaturedVideo: React.FC = () => {
         <div className="relative rounded-2xl overflow-hidden bg-black border border-slate-800 shadow-2xl">
           <video
             ref={videoRef}
+            data-video-id="recruiting-reel"
             src={playerData.featuredVideo.videoSrc}
             poster={playerData.featuredVideo.thumbnailSrc}
             playsInline
@@ -177,7 +178,8 @@ export const FeaturedVideo: React.FC = () => {
         </div>
 
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-slate-500">
-          <span>Natural field audio. No music, no overlays.</span>
+          <span>Natural field audio. No added music.</span>
+          <a href="/recruiting-film" className="text-amber-400 hover:underline">Open recruiting film page</a>
           {playerData.featuredVideo.videoSrcHd ? (
             <a
               href={playerData.featuredVideo.videoSrcHd}

@@ -1,4 +1,5 @@
 import { playerData } from '../data/playerData';
+import { event } from './engagement';
 
 /** One-line summary a coach can paste straight into a recruiting database. */
 export function profileOneLine(): string {
@@ -43,7 +44,7 @@ export function profileBlock(): string {
   L.push(`Email: ${p.email}`);
   if (p.phone) L.push(`Phone: ${p.phone}`);
   if (p.parentName) L.push(`Parent: ${p.parentName}${p.parentPhone ? ` — ${p.parentPhone}` : ''}${p.parentEmail ? ` — ${p.parentEmail}` : ''}`);
-  L.push(`Film: ${p.siteUrl}`);
+  L.push(`Film: ${p.siteUrl}/recruiting-film`);
   L.push(`YouTube: ${p.youtubeUrl}`);
   L.push(`NCSA: ${p.ncsaUrl}`);
   // X and IG are different handles. They used to share one line, which handed
@@ -54,9 +55,11 @@ export function profileBlock(): string {
 }
 
 export async function copyText(text: string): Promise<boolean> {
+  const copied = () => event(text.includes('#clip=') ? 'clip_link_copy' : text === `${playerData.siteUrl}/recruiting-film` ? 'film_link_copy' : 'profile_copy');
   try {
     if (navigator.clipboard && window.isSecureContext) {
       await navigator.clipboard.writeText(text);
+      copied();
       return true;
     }
   } catch {
@@ -72,6 +75,7 @@ export async function copyText(text: string): Promise<boolean> {
     ta.select();
     const ok = document.execCommand('copy');
     document.body.removeChild(ta);
+    if (ok) copied();
     return ok;
   } catch {
     return false;

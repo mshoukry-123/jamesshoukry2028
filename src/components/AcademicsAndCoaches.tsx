@@ -147,7 +147,7 @@ export const AcademicsAndCoaches: React.FC = () => {
                   </div>
                 </div>
                 <a
-                  href={p.youtubeUrl}
+                  href={`https://www.youtube.com/watch?v=${p.featuredVideo.youtubeId}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="shrink-0 px-3 py-2 rounded bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold transition-all inline-flex items-center gap-1"

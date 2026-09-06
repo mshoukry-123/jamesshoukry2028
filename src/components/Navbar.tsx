@@ -3,7 +3,8 @@ import { playerData } from '../data/playerData';
 import { Mail, ExternalLink, Award, ClipboardCopy, Check } from 'lucide-react';
 import { profileBlock, copyText } from '../lib/profile';
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<{ watchPage?: boolean }> = ({ watchPage = false }) => {
+  const home = watchPage ? '/' : '';
   const [copied, setCopied] = useState(false);
 
   const onCopy = async () => {
@@ -17,7 +18,7 @@ export const Navbar: React.FC = () => {
   return (
     <header className="sticky top-0 z-40 bg-slate-950/92 backdrop-blur-md border-b border-slate-800/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between gap-3">
-        <a href="#" className="flex items-center gap-2.5 min-w-0 group">
+        <a href="/" className="flex items-center gap-2.5 min-w-0 group">
           <span className="shrink-0 w-9 h-9 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-bold text-amber-400 font-display text-lg tracking-wider">
             JS
           </span>
@@ -36,13 +37,13 @@ export const Navbar: React.FC = () => {
         </a>
 
         <nav className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-300">
-          <a href="#metrics" className="hover:text-amber-400 transition-colors">Metrics</a>
-          <a href="#selections" className="hover:text-amber-400 transition-colors">Selections</a>
-          <a href="#featured-reel" className="hover:text-amber-400 transition-colors">Film</a>
-          <a href="#film-room" className="hover:text-amber-400 transition-colors">
+          <a href={`${home}#metrics`} className="hover:text-amber-400 transition-colors">Metrics</a>
+          <a href={`${home}#selections`} className="hover:text-amber-400 transition-colors">Selections</a>
+          <a href="/recruiting-film" className="hover:text-amber-400 transition-colors">Film</a>
+          <a href={`${home}#film-room`} className="hover:text-amber-400 transition-colors">
             Film Room ({playerData.clips.length})
           </a>
-          <a href="#academics" className="hover:text-amber-400 transition-colors">Academics</a>
+          <a href={`${home}#academics`} className="hover:text-amber-400 transition-colors">Academics</a>
         </nav>
 
         <div className="flex items-center gap-2 shrink-0">

@@ -55,7 +55,7 @@ export const Hero: React.FC = () => {
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
-                href="#featured-reel"
+                href="/recruiting-film"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-sm font-bold tracking-wide transition-all shadow-lg shadow-amber-500/20"
               >
                 <Play className="w-4 h-4 fill-slate-950" />
@@ -174,7 +174,7 @@ export const Hero: React.FC = () => {
                   </div>
 
                   <a
-                    href="#featured-reel"
+                    href="/recruiting-film"
                     className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-amber-500/30"
                   >
                     <Play className="w-3.5 h-3.5 fill-slate-950" />
