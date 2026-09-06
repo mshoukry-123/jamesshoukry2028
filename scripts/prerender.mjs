@@ -8,6 +8,7 @@ const server = await createServer({ server: { middlewareMode: true, hmr: false }
 try {
   const { App } = await server.ssrLoadModule('/src/App.tsx');
   const { playerData: p } = await server.ssrLoadModule('/src/data/playerData.ts');
+  const { filmChapterPath } = await server.ssrLoadModule('/src/lib/filmChapters.ts');
   const origin = p.siteUrl;
   const originalGraph = JSON.parse(template.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
   const video = originalGraph['@graph'].find(node => node['@type'] === 'VideoObject');
@@ -20,6 +21,13 @@ try {
   video.name = p.featuredVideo.title;
   video.thumbnailUrl = `${origin}${p.featuredVideo.thumbnailSrc}`;
   video.contentUrl = `${origin}${p.featuredVideo.videoSrc}`;
+  video.hasPart = p.featuredVideo.chapters.map((chapter, index, chapters) => ({
+    '@type': 'Clip',
+    name: chapter.label,
+    startOffset: chapter.time,
+    endOffset: chapters[index + 1]?.time ?? p.featuredVideo.durationSeconds,
+    url: `${origin}${filmChapterPath(chapter.time)}`,
+  }));
   const routes = [
     { path: '', page: 'profile', title: 'James Shoukry | 2028 3B | IMG Academy Baseball Recruit', description: 'James Shoukry, Class of 2028 third baseman at IMG Academy in Bradenton, Florida. Watch recruiting film, view dated measurements, and contact James.', graph: { ...originalGraph, '@graph': originalGraph['@graph'].filter(n => n['@type'] !== 'VideoObject') } },
     { path: '/recruiting-film', page: 'film', title: 'James Shoukry Recruiting Film | 2028 3B | IMG Academy', description: video.description, graph: originalGraph },

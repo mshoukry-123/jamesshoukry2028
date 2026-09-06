@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Download, ExternalLink, Link2, Check, Mail } from 'lucide-react';
 import { playerData } from '../data/playerData';
 import { copyText } from '../lib/profile';
+import { filmChapterPath, filmStartTime } from '../lib/filmChapters';
 
 export function RecruitingFilmPage() {
   const p = playerData;
@@ -10,6 +11,17 @@ export function RecruitingFilmPage() {
   const video = useRef<HTMLVideoElement>(null);
   const [copied, setCopied] = useState(false);
   const [playError, setPlayError] = useState(false);
+  useEffect(() => {
+    const element = video.current;
+    if (!element) return;
+    const startAtLink = () => {
+      const time = filmStartTime(window.location.search, element.duration);
+      if (time !== null) element.currentTime = time;
+    };
+    if (element.readyState >= 1) startAtLink();
+    element.addEventListener('loadedmetadata', startAtLink);
+    return () => element.removeEventListener('loadedmetadata', startAtLink);
+  }, []);
   async function seek(time: number) {
     if (!video.current) return;
     video.current.currentTime = time;
@@ -21,13 +33,17 @@ export function RecruitingFilmPage() {
       <div className="max-w-5xl mx-auto">
         <a href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-amber-400 mb-4"><ArrowLeft size={16} /> Full recruiting profile</a>
         <h1 className="font-display text-2xl sm:text-4xl font-bold text-white">{p.name} — Recruiting Film</h1>
-        <p className="text-base text-slate-300 mt-2 mb-5">{p.classLabel} · {p.positionsDisplay} · {p.batsThrows} · {p.school}, {p.location}</p>
+        <p className="text-base text-slate-300 mt-2 mb-5">{p.classLabel} · Third baseman ({p.positionsDisplay}) · {p.batsThrows} · {p.school}, {p.location}</p>
         <video ref={video} controls playsInline preload="metadata" data-video-id="recruiting-reel" data-video-title="James Shoukry recruiting film"
           src={playerData.featuredVideo.videoSrc} poster={playerData.featuredVideo.thumbnailSrc}
           className="w-full aspect-video rounded-xl bg-black border border-slate-800" aria-label="James Shoukry recruiting film" />
         {playError && <p role="status" className="mt-2 text-sm text-amber-300">Press Play in the video controls to continue.</p>}
         <nav aria-label="Film chapters" className="flex flex-wrap gap-2 mt-4">
-          {film.chapters.map(c => <button key={c.time} onClick={() => void seek(c.time)} className="px-3 py-2 text-sm rounded-lg bg-slate-900 border border-slate-700 hover:border-amber-400 hover:text-amber-400">{c.label}</button>)}
+          {film.chapters.map(c => <a key={c.time} href={filmChapterPath(c.time)} onClick={event => {
+            if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+            event.preventDefault();
+            void seek(c.time);
+          }} className="px-3 py-2 text-sm rounded-lg bg-slate-900 border border-slate-700 hover:border-amber-400 hover:text-amber-400">{c.label}</a>)}
         </nav>
         <div className="flex flex-wrap gap-3 mt-5">
           <a href={`mailto:${playerData.email}?subject=Recruiting%20Inquiry%20-%20James%20Shoukry`} className="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-300 text-slate-950 rounded-lg px-4 py-3 font-semibold"><Mail size={18} /> Contact James</a>

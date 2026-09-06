@@ -4,6 +4,12 @@ import { createServer } from 'vite';
 
 const server = await createServer({ server: { middlewareMode: true, hmr: false }, appType: 'custom' });
 try {
+  const { filmStartTime } = await server.ssrLoadModule('/src/lib/filmChapters.ts');
+  assert.equal(filmStartTime('?t=36.22', 74.8), 36.22);
+  assert.equal(filmStartTime('?utm_source=email&t=0', 74.8), 0);
+  for (const query of ['', '?t=', '?t=-1', '?t=NaN', '?t=Infinity', '?t=75', '?t=74.8', '?t=1e2']) {
+    assert.equal(filmStartTime(query, 74.8), null, `Invalid film start: ${query}`);
+  }
   const { VideoProgress } = await server.ssrLoadModule('/src/lib/videoProgress.ts');
   const full = new VideoProgress();
   const thresholds = [];
@@ -73,6 +79,14 @@ try {
       assert.equal(video.mainEntityOfPage, url);
       assert.ok(html.includes('<video'));
       assert.ok(html.includes(new URL(video.contentUrl).pathname));
+      assert.equal(video.hasPart.length, 4);
+      for (const chapter of video.hasPart) {
+        assert.equal(chapter['@type'], 'Clip');
+        assert.ok(chapter.endOffset > chapter.startOffset);
+        assert.ok(chapter.endOffset <= 74.8);
+        assert.equal(filmStartTime(new URL(chapter.url).search, 74.8), chapter.startOffset);
+        assert.ok(html.includes(`href="${chapter.url.replace('https://www.jamesshoukry2028.com', '')}"`), 'Search chapters must have visible matching links');
+      }
     }
   }
   console.log('PASS: pre-rendered pages, route canonicals and watch-page video schema');
