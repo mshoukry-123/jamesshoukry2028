@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { playerData } from '../data/playerData';
 import { Play, MapPin, Mail, ExternalLink, ClipboardCopy, Check, Film } from 'lucide-react';
 import { profileBlock, copyText } from '../lib/profile';
+import { scrollToFilmAndPlay, isModifiedClick } from '../lib/filmPlayer';
 
 export const Hero: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -12,6 +13,16 @@ export const Hero: React.FC = () => {
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2200);
     }
+  };
+
+  // One click on Watch should start the film where the visitor already is.
+  // The standalone /recruiting-film page stays available for the shareable
+  // link, but a coach skimming the profile should not be made to load a second
+  // page and press play again.
+  const onWatch = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (isModifiedClick(e)) return;
+    e.preventDefault();
+    scrollToFilmAndPlay();
   };
 
   const p = playerData;
@@ -56,6 +67,7 @@ export const Hero: React.FC = () => {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <a
                 href="/recruiting-film"
+                onClick={onWatch}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-sm font-bold tracking-wide transition-all shadow-lg shadow-amber-500/20"
               >
                 <Play className="w-4 h-4 fill-slate-950" />
@@ -175,6 +187,7 @@ export const Hero: React.FC = () => {
 
                   <a
                     href="/recruiting-film"
+                    onClick={onWatch}
                     className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold transition-all shadow-lg shadow-amber-500/30"
                   >
                     <Play className="w-3.5 h-3.5 fill-slate-950" />

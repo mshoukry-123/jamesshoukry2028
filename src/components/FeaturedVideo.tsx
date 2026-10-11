@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { playerData } from '../data/playerData';
 import { Play, Pause, Volume2, VolumeX, Maximize, Film, CheckCircle2, Download } from 'lucide-react';
+import { FILM_PLAY_EVENT, type FilmPlayDetail } from '../lib/filmPlayer';
 
 const CHAPTERS = [
   { t: 0,    label: 'Title' },
@@ -64,6 +65,24 @@ export const FeaturedVideo: React.FC = () => {
       el.removeEventListener('timeupdate', onTime);
       el.removeEventListener('loadedmetadata', onMeta);
     };
+  }, []);
+
+  // The Hero "Watch" buttons fire this inside their own click, so play() is
+  // still a user gesture and the browser lets the field audio through.
+  useEffect(() => {
+    const onRequest = (e: Event) => {
+      const el = v();
+      if (!el) return;
+      const startAt = (e as CustomEvent<FilmPlayDetail>).detail?.startAt;
+      if (typeof startAt === 'number') el.currentTime = startAt;
+      el.preload = 'auto';
+      el.muted = false;
+      setIsMuted(false);
+      setStarted(true);
+      el.play().catch(() => setStarted(false));
+    };
+    window.addEventListener(FILM_PLAY_EVENT, onRequest);
+    return () => window.removeEventListener(FILM_PLAY_EVENT, onRequest);
   }, []);
 
   const pct = dur ? (t / dur) * 100 : 0;
@@ -180,7 +199,7 @@ export const FeaturedVideo: React.FC = () => {
 
         <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-[11px] text-slate-500">
           <span>Natural field audio. No added music.</span>
-          <a href="/recruiting-film" className="text-amber-400 hover:underline">Open recruiting film page</a>
+          <a href="/recruiting-film" className="text-amber-400 hover:underline">Open on its own page (shareable link)</a>
           {playerData.featuredVideo.videoSrcHd ? (
             <a
               href={playerData.featuredVideo.videoSrcHd}

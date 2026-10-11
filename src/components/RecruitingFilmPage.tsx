@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, Download, ExternalLink, Link2, Check, Mail } from 'lucide-react';
+import { ArrowLeft, Download, ExternalLink, Link2, Check, Mail, Play } from 'lucide-react';
 import { playerData } from '../data/playerData';
 import { copyText } from '../lib/profile';
 import { filmChapterPath, filmStartTime } from '../lib/filmChapters';
@@ -11,6 +11,7 @@ export function RecruitingFilmPage() {
   const video = useRef<HTMLVideoElement>(null);
   const [copied, setCopied] = useState(false);
   const [playError, setPlayError] = useState(false);
+  const [started, setStarted] = useState(false);
   useEffect(() => {
     const element = video.current;
     if (!element) return;
@@ -25,7 +26,18 @@ export function RecruitingFilmPage() {
   async function seek(time: number) {
     if (!video.current) return;
     video.current.currentTime = time;
-    try { await video.current.play(); setPlayError(false); }
+    try { await video.current.play(); setStarted(true); setPlayError(false); }
+    catch { setPlayError(true); }
+  }
+  // This page is what coaches open from an email link, so it does not start on
+  // its own. Browsers would only allow that muted, and a silent reel misreads
+  // as a reel with no audio. One click on the frame starts it with sound.
+  async function startFilm() {
+    const element = video.current;
+    if (!element) return;
+    if (!element.paused) { element.pause(); return; }
+    element.preload = 'auto';
+    try { await element.play(); setStarted(true); setPlayError(false); }
     catch { setPlayError(true); }
   }
   return (
@@ -34,9 +46,24 @@ export function RecruitingFilmPage() {
         <a href="/" className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-amber-400 mb-4"><ArrowLeft size={16} /> Full recruiting profile</a>
         <h1 className="font-display text-2xl sm:text-4xl font-bold text-white">{p.name} — Recruiting Film</h1>
         <p className="text-base text-slate-300 mt-2 mb-5">{p.classLabel} · Third baseman ({p.positionsDisplay}) · {p.batsThrows} · {p.school}, {p.location}</p>
-        <video ref={video} controls playsInline preload="metadata" data-video-id="recruiting-reel" data-video-title="James Shoukry recruiting film"
-          src={playerData.featuredVideo.videoSrc} poster={playerData.featuredVideo.thumbnailSrc}
-          className="w-full aspect-video rounded-xl bg-black border border-slate-800" aria-label="James Shoukry recruiting film" />
+        <div className="relative rounded-xl overflow-hidden border border-slate-800 bg-black">
+          <video ref={video} controls playsInline preload="metadata" data-video-id="recruiting-reel" data-video-title="James Shoukry recruiting film"
+            src={playerData.featuredVideo.videoSrc} poster={playerData.featuredVideo.thumbnailSrc}
+            onClick={() => { void startFilm(); }}
+            onPlay={() => setStarted(true)}
+            className="w-full aspect-video bg-black cursor-pointer" aria-label="James Shoukry recruiting film" />
+          {!started && (
+            <button
+              onClick={() => { void startFilm(); }}
+              aria-label="Play the recruiting film"
+              className="absolute inset-0 flex items-center justify-center bg-slate-950/10 hover:bg-slate-950/0 transition-colors group"
+            >
+              <span className="w-20 h-20 rounded-full bg-amber-500 text-slate-950 flex items-center justify-center shadow-2xl shadow-amber-500/30 group-hover:scale-105 transition-transform">
+                <Play className="w-9 h-9 fill-current ml-1" />
+              </span>
+            </button>
+          )}
+        </div>
         {playError && <p role="status" className="mt-2 text-sm text-amber-300">Press Play in the video controls to continue.</p>}
         <nav aria-label="Film chapters" className="flex flex-wrap gap-2 mt-4">
           {film.chapters.map(c => <a key={c.time} href={filmChapterPath(c.time)} onClick={event => {
